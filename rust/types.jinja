@@ -1,3 +1,5 @@
+{% import "templates/macros.jinja" as macros %}
+
 {%- macro get_rust_primitive(property) -%}
 {% filter trim %}
 {%- if property.type -%}
@@ -64,9 +66,9 @@
     {%- elif property.type and property.type!='array' -%}
         {%- set type = get_rust_primitive(property) -%}
     {%- endif -%}
-    {%- if relation_is_many_to_one(property)=='true' or relation_is_one_to_one(property)=='true' -%}
+    {%- if macros.relation_is_many_to_one(property)=='true' or macros.relation_is_one_to_one(property)=='true' -%}
         {{ 'HasOne<super::'~ identifier(property['$ref'] | replace('.json', '')) ~ '::Entity>' }}
-    {%- elif relation_is_many_to_many(property)=='true' or relation_is_one_to_many(property)=='true' -%}
+    {%- elif macros.relation_is_many_to_many(property)=='true' or macros.relation_is_one_to_many(property)=='true' -%}
         {{ 'HasMany<super::'~ identifier(property.items['$ref'] | replace('.json', '')) ~ '::Entity>' }}
     {%- elif not required -%}
         Option<{{ type }}>
