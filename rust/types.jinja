@@ -224,6 +224,20 @@ pub {{name}}_id: {{ rust_types.rust_id_type(id_type) }},
     {{- var -}}
 {%- endmacro %}
 
+{% macro from_model_value(name,property) -%}
+{%- filter trim -%}
+    {%- if property.required and macros.relation_is_many_to_many(property)=='true' or macros.relation_is_one_to_many(property)=='true' -%}
+    vec![].into()
+    {%- elif property.required and macros.is_relation(property)=='true' -%}
+    {{ property.target | pascal_case }}::default()
+    {%- elif macros.is_relation(property)=='true' and not property.required -%}
+    None
+    {%- else -%}
+        {{ 'model.'~ rust_var(name,false) }}
+    {%- endif -%}
+{%- endfilter -%}
+{%- endmacro %}
+
 {% macro identifier(name) %}
 {%- filter trim -%}
 {{rust_var(name | snake_case,false)}}

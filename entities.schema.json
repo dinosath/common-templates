@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "patternProperties": {
-    "^[A-Za-z][A-Za-z0-9_]*$": {
+    "^[A-Za-z][A-Za-z0-9_-]*$": {
       "type": "object",
       "required": ["type", "attributes"],
       "properties": {
@@ -12,7 +12,7 @@
         "attributes": {
           "type": "object",
           "patternProperties": {
-            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+            "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
               "type": "object",
               "required": ["type"],
               "properties": {
@@ -20,7 +20,8 @@
                   "type": "string",
                   "enum": [
                     "string", "text", "integer", "float", "boolean", "email",
-                    "datetime", "date", "json", "uid", "relation", "decimal"
+                    "datetime", "date", "json", "uid", "relation", "decimal",
+                    "enumeration"
                   ]
                 },
                 "description": { "type": "string" },
@@ -42,7 +43,7 @@
                 {
                   "if": { "properties": { "type": { "const": "relation" } } },
                   "then": {
-                    "required": ["relation", "target"],
+                    "required": ["relation", "target", "mappedBy"],
                     "properties": {
                       "relation": {
                         "type": "string",
@@ -58,7 +59,8 @@
                     "not": {
                       "anyOf": [
                         { "required": ["relation"] },
-                        { "required": ["target"] }
+                        { "required": ["target"] },
+                        { "required": ["mappedBy"] }
                       ]
                     }
                   }

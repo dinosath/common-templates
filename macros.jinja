@@ -58,7 +58,7 @@
 {%- macro get_relation_type(property) -%}{% if property.type == 'relation' %}{{ property.relation }}{% endif %}{%- endmacro %}
 
 {%- macro m2m_junction_table(entity_name, property) -%}
-{% if relation_is_many_to_many(property)=='true' %}{{ [ entity_name|lower, property.target|lower ] | sort | join('_') | snake_case }}{% endif %}
+{% if relation_is_many_to_many(property)=='true' %}{{ [ property.mappedBy|pascal_case, property.target|pascal_case ] | sort | join('_') | trim }}{% endif %}
 {%- endmacro %}
 
 {%- macro relation_meta(property) -%}
