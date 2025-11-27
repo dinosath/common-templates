@@ -11,8 +11,8 @@
 #[sea_orm(has_many)]
 {%      elif macros.relation_is_many_to_one(property)=='true' -%}
 #[sea_orm(unique)]
-pub {{name}}_id: {{ rust_types.rust_id_type(id_type) }},
-#[sea_orm(belongs_to, from = "{{name}}_id", to = "id")]
+pub {{name | snake_case}}_id: {{ rust_id_type(id_type) }},
+#[sea_orm(belongs_to, from = "{{name | snake_case}}_id", to = "id")]
 {%      endif -%}
 {%  endif -%}
 {%- endmacro -%}
